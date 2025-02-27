@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pago</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center h-screen">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-6 w-full text-center">
+        <h1 class="text-lg font-bold">Recargar Balance</h1>
+    </header>
+    
+    <!-- Información de pago -->
+    <section class="bg-white p-1 rounded shadow-md w-80 mt-0 text-center">
+        <h2 class="text-lg font-bold mb-4">Información de pago</h2>
+    </section>
+    
+    <section class="bg-white p-2 rounded shadow-md w-80 mt-0 text-align">
+        <p><strong>Banco:</strong> STP</p>
+        <p><strong>Concepto:</strong> Pago</p>
+        <p><strong>Beneficiario:</strong> Cervantes Monica</p>
+        <p><strong>Clabe:</strong> 646012206895932924</p>
+    </section>
+
+    <!-- Selector de cantidad -->
+    <section class="bg-white p-4 rounded shadow-md w-80 mt-2 text-center">
+        <h2 class="text-lg font-bold mb-4">Por favor seleccione la cantidad</h2>
+        <select id="cantidad" class="w-full p-3 bg-gray-200 rounded shadow-md">
+            <option value="1000">Mex$68</option>
+            <option value="100">Mex$100</option>
+            <option value="200">Mex$200</option>
+            <option value="300">Mex$300</option>
+            <option value="500">Mex$500</option>
+            <option value="1000">Mex$1000</option>
+        </select>
+
+     
+
+    </section>
+
+    <!-- Botón para generar orden -->
+    <button onclick="mostrarConfirmacion()" class="w-50 bg-green-500 text-white p-3 rounded shadow-md w-50 mt-4">Generar orden</button>
+    
+    <!-- Modal de confirmación -->
+    <div id="confirmacion-modal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded shadow-md w-80">
+            <h2 class="text-lg font-bold mb-4">Confirmar orden de Recarga</h2>
+            <p>Después de pagar, comunícate con tu supervisor.</p>
+            <div class="flex justify-between mt-4">
+                <button onclick="confirmarPago()" class="bg-green-500 text-white px-4 py-2 rounded">Confirmar</button>
+                <button onclick="cerrarConfirmacion()" class="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+            </div>
+       
+        </div>
+    </div>
+
+    <script>
+        function mostrarConfirmacion() {
+            document.getElementById("confirmacion-modal").classList.remove("hidden");
+        }
+
+        function cerrarConfirmacion() {
+            document.getElementById("confirmacion-modal").classList.add("hidden");
+        }
+
+        function confirmarPago() {
+            const cantidadSeleccionada = document.getElementById("cantidad").value;
+            alert(`Orden generada con éxito. Cantidad: Mex$${cantidadSeleccionada}`);
+            cerrarConfirmacion();
+            window.location.href = "AmazonMAIN.html"; 
+        }
+    </script>
+
+<section class="p-0 bg-white shadow-md rounded mt-9">
+    <div class="flex flex-col items-center">
+    <h2 class="text-lg font-bold"></h2>
+</section>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+        <a href="AmazonMAIN.html" class="text-blue-600 font-bold">🏠 Portada</a>
+        <a href="pago.html" class="text-blue-600 font-bold">💰 Recargar</a>
+        <a href="Tareas.html" class="text-blue-600 font-bold">📋 Tareas</a>
+        <a href="Orden.html" class="text-blue-600 font-bold">📦 Orden</a>
+        <a href="mia.html" class="text-blue-600 font-bold">👤 Mío</a>
+    </footer>
+
+</body>
+</html>

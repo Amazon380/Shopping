@@ -1,0 +1,281 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .mensaje {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1D4ED8;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        .mostrar {
+            display: block;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message-box {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white p-4 flex items-center justify-left">
+        <div class="bg-yellow-500 text-black px-3 py-1 rounded">Saldo mínimo: 96 | Beneficio: 48.8%</div>
+    </header>
+
+    <section class="p-4 bg-white shadow-md rounded mt-4 mx-4">
+        <div class="grid grid-cols-2 gap-4 text-center">
+            <div>
+                <p class="text-gray-700">Ganancias hoy</p>
+                <p class="font-bold" id="gananciasHoy">Mex$0.00</p>
+            </div>
+            <div>
+                <p class="text-gray-700">Ingresos totales</p>
+                <p class="font-bold" id="ingresosTotales">Mex$0.00</p>
+            </div>
+            <div>
+                <p class="text-gray-700">Completar la tarea</p>
+                <p id="contadorTareas" class="font-bold">8</p>
+            </div>
+            <div>
+                <p class="text-gray-700">Tareas congeladas</p>
+                <p class="font-bold">0</p>
+            </div>
+            <div>
+                <p class="text-gray-700">Saldo congelado</p>
+                <p class="font-bold" id="saldoCongelado">Mex$0.00</p>
+            </div>
+            <div>
+                <p class="text-gray-700">Saldo disponible</p>
+                <p id="saldo" class="font-bold">Cargando...</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="mensajeSaldoInsuficiente" class="mensaje">
+        <p>Saldo insuficiente</p>
+    </div>
+
+    <div id="mensajeNoTareas" class="mensaje">
+        <p>Ya no tienes tareas.</p>
+    </div>
+
+    <div id="mensajePedidoPendiente" class="mensaje">
+        <p>Tienes un pedido pendiente.</p>
+    </div>
+
+    <div class="flex justify-center mt-4">
+        <button id="btnOrden" class="bg-blue-500 text-white px-6 py-2 rounded">🔄 Confirmar Orden</button>
+    </div>
+
+    <div id="overlay" class="overlay">
+        <div class="message-box">
+            <img id="loadingImage" src="" alt="Buscando Orden" width="200">
+            <p id="loadingText">Buscando orden...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            try {
+                let telefono = localStorage.getItem("telefono");
+                if (!telefono) {
+                    alert("No se encontró un teléfono válido. Inicia sesión.");
+                    window.location.href = "Registro.html";
+                    return;
+                }
+
+                if (pedidoPendiente) {
+            localStorage.setItem("suscripcionBloqueada", "true");
+        } else {
+            localStorage.removeItem("suscripcionBloqueada");
+
+
+        }
+        let btnSuscripcion = document.getElementById("btnSuscripcion");
+        if (btnSuscripcion) {
+            if (localStorage.getItem("suscripcionBloqueada")) {
+                btnSuscripcion.disabled = true;
+                btnSuscripcion.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                btnSuscripcion.disabled = false;
+                btnSuscripcion.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+
+    
+                // Usar el teléfono del usuario para cargar los datos específicos
+                let saldoGuardado = parseFloat(localStorage.getItem("saldo_" + telefono) || 28);
+                let ingresosTotales = parseFloat(localStorage.getItem("ingresosTotales_" + telefono) || 0);
+                document.getElementById("saldo").innerText = `Mex$${saldoGuardado.toFixed(2)}`;
+    
+                // Mostrar ingresos totales tal cual como están guardados
+                document.getElementById('ingresosTotales').innerText = `Mex$${ingresosTotales.toFixed(2)}`;
+    
+                // Obtener las ganancias hoy desde localStorage, asegurándonos que son específicas para el teléfono
+                let gananciasHoy = parseFloat(localStorage.getItem("gananciasHoy_" + telefono) || 0);
+                document.getElementById("gananciasHoy").innerText = `Mex$${gananciasHoy.toFixed(2)}`;
+    
+                // Obtener el contador de tareas para este teléfono
+                let contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+                document.getElementById("contadorTareas").innerText = contadorTareas;
+    
+                // Mostrar saldo congelado si existe alguna cantidad
+                let saldoCongelado = parseFloat(localStorage.getItem("saldoCongelado_" + telefono) || 0);
+                document.getElementById("saldoCongelado").innerText = `Mex$${saldoCongelado.toFixed(2)}`;
+    
+                const productos = [
+                    { nombre: "Drone RC con 4K HD Doble Cámara WiFi FPV Cuadricóptero Plegable + 3 Batería", imagen: "https://i.ebayimg.com/images/g/x4EAAOSw48llqI7V/s-l960.webp" },
+                    { nombre: "Mini cámara corporal de policía HD 1080P", imagen: "https://i.ebayimg.com/thumbs/images/g/Pr8AAOSwR9tmleD3/s-l500.jpg" },
+                    { nombre: "HD 1080P Video DVR Clip IR Cámara Nocturna", imagen: "https://i.ebayimg.com/images/g/ojAAAOSwKvZnDud5/s-l960.webp" },
+                    { nombre: "Cámara de acción combo de potencia DJI Action 2", imagen: "https://i.ebayimg.com/images/g/ID8AAOSwvGBlvxbZ/s-l1600.webp" },
+                    { nombre: "Garmin Blanco VIRB Elite HD GPS", imagen: "https://i.ebayimg.com/thumbs/images/g/yq8AAOSwAFJmjbGm/s-l500.jpg" }
+                ];
+    
+                const overlay = document.getElementById('overlay');
+                const loadingImage = document.getElementById('loadingImage');
+                const loadingText = document.getElementById('loadingText');
+                const mensajeNoTareas = document.getElementById("mensajeNoTareas");
+                const mensajePedidoPendiente = document.getElementById("mensajePedidoPendiente");
+                const mensajeSaldoInsuficiente = document.getElementById("mensajeSaldoInsuficiente");
+    
+                let ultimoReseteo = localStorage.getItem('ultimoReseteo_' + telefono);
+                const ahora = new Date().getTime();
+    
+                // Reseteamos las ganancias si ha pasado más de un día
+                if (!ultimoReseteo || ahora - parseInt(ultimoReseteo) >= 86400000) { 
+                    gananciasHoy = 0; 
+                    localStorage.setItem('gananciasHoy_' + telefono, gananciasHoy);
+                    localStorage.setItem('ultimoReseteo_' + telefono, ahora.toString());
+                }
+    
+                // Los ingresos totales siguen siendo solo el saldo disponible
+                document.getElementById('gananciasHoy').innerText = `Mex$${gananciasHoy.toFixed(2)}`;
+                document.getElementById('ingresosTotales').innerText = `Mex$${ingresosTotales.toFixed(2)}`;
+    
+                document.getElementById("btnOrden").addEventListener("click", function() {
+                    let contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+    
+                    if (contadorTareas === 0) {
+                        mensajeNoTareas.classList.add("mostrar");
+                        setTimeout(() => {
+                            mensajeNoTareas.classList.remove("mostrar");
+    
+                            // Eliminar suscripción activa
+                            localStorage.removeItem("suscripcionActiva");
+    
+                            // Permitir tomar una nueva suscripción
+                        }, 2000);
+                        return;
+                    }
+    
+                    let pedidoPendiente = localStorage.getItem("pedidoPendiente");
+                    if (pedidoPendiente) {
+                        mensajePedidoPendiente.classList.add("mostrar");
+                        setTimeout(() => {
+                            mensajePedidoPendiente.classList.remove("mostrar");
+                        }, 3000);
+                        return;
+                    }
+    
+                    if (saldoGuardado < 96) {
+                        mensajeSaldoInsuficiente.classList.add("mostrar");
+                        setTimeout(() => {
+                            mensajeSaldoInsuficiente.classList.remove("mostrar");
+                        }, 2000);
+                        return;
+                    }
+                    
+    
+                    loadingImage.src = 'carga.jpg'; 
+                    loadingText.textContent = 'Buscando orden...';
+                    overlay.style.display = 'flex';
+    
+                    setTimeout(() => {
+                        loadingImage.src = 'carga2.jpg'; 
+                        loadingText.textContent = 'Orden encontrada';
+    
+                        let productoAleatorio = productos[Math.floor(Math.random() * productos.length)];
+                        let pedido = {
+                            nombre: productoAleatorio.nombre,
+                            imagen: productoAleatorio.imagen,
+                            ganancias: Math.floor(Math.random() * (14 - 8 + 1)) + 8
+                        };
+    
+                        localStorage.setItem("pedidoPendiente", JSON.stringify(pedido));
+    
+                        // Restar 1 de tareas
+                        contadorTareas--;
+                        localStorage.setItem("contadorTareas_" + telefono, contadorTareas);
+    
+                        // Actualizar el contador en la vista
+                        document.getElementById("contadorTareas").innerText = contadorTareas;
+    
+                        console.log("Pedido generado:", pedido);
+    
+                        // Actualizar ganancias después de un pedido
+                        let gananciasHoy = parseFloat(localStorage.getItem("gananciasHoy_" + telefono) || 0);
+                        gananciasHoy += pedido.ganancias;
+                        localStorage.setItem("gananciasHoy_" + telefono, gananciasHoy);
+    
+                        // Aquí es donde verificamos si el saldo ha aumentado para actualizar los ingresos totales
+                        let saldoNuevo = parseFloat(localStorage.getItem("saldo_" + telefono));
+                        if (saldoNuevo > saldoGuardado) {
+                            ingresosTotales += (saldoNuevo - saldoGuardado);
+                            localStorage.setItem("ingresosTotales_" + telefono, ingresosTotales);
+                            document.getElementById('ingresosTotales').innerText = `Mex$${ingresosTotales.toFixed(2)}`;
+                        }
+    
+                    }, 2000);
+    
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 5000);
+    
+                });
+    
+            } catch (error) {
+                console.error("Error cargando la página: ", error);
+            }
+        });
+    </script>
+    
+
+    
+    <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+        <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+            <a href="AmazonMAIN.html" class="blue-600 font-bold">🏠 Portada</a>
+            <a href="pago.html" class="text-blue-600 font-bold">💰 Recargar</a>
+            <a href="Tareas.html" class="text-blue-600 font-bold">📋 Tareas</a>
+            <a href="Orden.html" class="text-blue-600 font-bold">📦 Orden</a>
+            <a href="mia.html" class="text-blue-600 font-bold">👤 Mío</a>
+        </footer>
+</body>
+</html>

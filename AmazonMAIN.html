@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white p-4 flex items-center">
+        <img src="https://flagcdn.com/w40/mx.png" alt="Bandera de México" class="w-6 h-6 mr-2">
+        <h1 class="text-lg font-bold">Community Woork</h1>
+    </header>
+    
+    <section class="relative">
+        <img src="https://www.kindpng.com/picc/m/632-6328966_amazon-logo-de-amazon-png-transparent-png.png" alt="Carrito de compras" class="w-full">
+    </section>
+    
+    <div class="p-4">
+        <div class="flex justify-between">
+            <a href="introducion.html" class="bg-orange-500 text-white px-4 py-2 rounded">Introducción</a>
+            <a href="pago.html" class="bg-blue-500 text-white px-4 py-2 rounded absolute-center">Recargar</a>
+            <a href="presentacion.html" class="bg-blue-500 text-white px-4 py-2 rounded text-center">Retiro</a>
+            <a href="carta.html" class="bg-blue-500 text-white px-4 py-2 rounded text-center">Carta</a>
+        </div>
+    </div>
+    
+    <section class="p-4 bg-white shadow-md rounded mt-4">
+        <div class="flex flex-col items-center mb-4">
+            <h2 class="text-lg font-bold">Información personal</h2>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Ingresos totales:</p>
+                <p class="font-bold text-green-600">$0.00</p>
+            </div>
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Ganancias de hoy:</p>
+                <p class="font-bold text-green-600">$0.00</p>
+            </div>
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Saldo disponible:</p>
+                <p class="font-bold text-green-600" id="saldoDisponible">$0.00</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="p-4 bg-white shadow-md rounded mt-4">
+        <div class="flex flex-col items-center">
+            <h2 class="text-lg font-bold">Suscripciones</h2>
+        </div>
+        <div class="grid grid-cols-3 gap-6 mt-2">
+            <div class="flex flex-col items-center">
+                <img src="vip 1.jpeg" width="120">
+                <button class="bg-red-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(1, 96, 8)">VIP 1 Ganancias:15%</button>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="vip 2.jpeg" width="120">
+                <button class="bg-yellow-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(2, 250, 10)">VIP 2 Ganancias:25%</button>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="vip 3.jpeg" width="120">
+                <button class="bg-purple-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(3, 450, 12)">VIP 3 Ganancias:40%</button>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="vip 4.jpeg" width="120">
+                <button class="bg-pink-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(4, 700, 14)">VIP 4 Ganancias:60%</button>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="vip 5.jpeg" width="120">
+                <button class="bg-teal-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(5, 1000, 16)">VIP 5 Ganancias:75%</button>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="vip 6.jpeg" width="120">
+                <button class="bg-indigo-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(6, 1300, 18)">VIP 6 Ganancias:84%</button>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+        <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+            <a href="AmazonMAIN.html" class="blue-600 font-bold">🏠 Portada</a>
+            <a href="pago.html" class="text-blue-600 font-bold">💰 Recargar</a>
+            <a href="Tareas.html" class="text-blue-600 font-bold">📋 Tareas</a>
+            <a href="Orden.html" class="text-blue-600 font-bold">📦 Orden</a>
+            <a href="mia.html" class="text-blue-600 font-bold">👤 Mío</a>
+        </footer>
+
+    <!-- Ventana de confirmación -->
+    <div id="confirmacionOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Aceptar Orden</h3>
+            <p class="text-sm mb-4">Los pedidos no se pueden saltar. Si no se completan, no se podrá retirar los fondos.</p>
+            <button id="aceptarBtn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Aceptar</button>
+            <button id="cancelarBtn" class="bg-gray-300 text-black px-4 py-2 rounded mt-2" onclick="cerrarConfirmacion()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Ventana de "Órdenes encontradas" -->
+    <div id="ordenesEncontradasOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Órdenes Encontradas</h3>
+            <p class="text-sm mb-4">Se han encontrado órdenes disponibles.</p>
+        </div>
+    </div>
+
+    <!-- Ventana de "Ya tienes una suscripción activada" -->
+    <div id="suscripcionActivaOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Ya tienes una suscripción activada</h3>
+            <p class="text-sm mb-4">No puedes activar otra suscripción.</p>
+        </div>
+    </div>
+
+    <!-- Ventana de "Saldo Insuficiente" -->
+    <div id="saldoInsuficienteOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Recargar saldo</h3>
+            <p class="text-sm mb-4">Tu saldo es insuficiente para activar esta suscripción.</p>
+        </div>
+    </div>
+
+    <script>
+        function mostrarConfirmacion(vipNumber, saldoRequerido, tareasAgregadas) {
+            const telefono = localStorage.getItem("telefono");
+            const saldo = parseFloat(localStorage.getItem("saldo_" + telefono) || 0);
+            const contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+            const vipActivo = localStorage.getItem("vipActivo_" + telefono);
+
+            // Verificar si ya tiene un VIP activo
+            if (vipActivo) {
+                // Mostrar mensaje de suscripción ya activada
+                const suscripcionActivaOverlay = document.getElementById("suscripcionActivaOverlay");
+                suscripcionActivaOverlay.classList.remove("hidden");
+
+                // Cerrar la ventana después de 2 segundos
+                setTimeout(function() {
+                    suscripcionActivaOverlay.classList.add("hidden");
+                }, 2000);
+                return;
+            }
+
+            // Verificar si tiene saldo suficiente
+            if (saldo < saldoRequerido) {
+                const saldoInsuficienteOverlay = document.getElementById("saldoInsuficienteOverlay");
+                saldoInsuficienteOverlay.classList.remove("hidden");
+
+                // Cerrar la ventana después de 1 segundo
+                setTimeout(function() {
+                    saldoInsuficienteOverlay.classList.add("hidden");
+                }, 1000);
+                return;
+            }
+
+            // Mostrar la ventana de confirmación
+            const overlay = document.getElementById("confirmacionOverlay");
+            overlay.classList.remove("hidden");
+
+            const aceptarBtn = document.getElementById("aceptarBtn");
+            aceptarBtn.onclick = function() {
+                if (saldo >= saldoRequerido) {
+                    // Actualizar el contador de tareas
+                    let nuevoContadorTareas = contadorTareas + tareasAgregadas; 
+                    localStorage.setItem("contadorTareas_" + telefono, nuevoContadorTareas);
+                    localStorage.setItem("vipActivo_" + telefono, `VIP ${vipNumber}`);
+
+                    // Mostrar mensaje de éxito
+                    
+
+                    // Mostrar ventana "Órdenes encontradas"
+                    const ordenesOverlay = document.getElementById("ordenesEncontradasOverlay");
+                    ordenesOverlay.classList.remove("hidden");
+
+                    // Cerrar la ventana de "Órdenes encontradas" después de 2 segundos
+                    setTimeout(function() {
+                        ordenesOverlay.classList.add("hidden");
+                    }, 2000);
+                } else {
+                    // Mostrar mensaje de saldo insuficiente
+                }
+
+                // Cerrar la ventana de confirmación
+                cerrarConfirmacion();
+            };
+        }
+
+        function cerrarConfirmacion() {
+            const overlay = document.getElementById("confirmacionOverlay");
+            overlay.classList.add("hidden");
+        }
+
+        // Agregado: Script para suscripción automática si no hay tareas
+        document.addEventListener("DOMContentLoaded", function() {
+            const telefono = localStorage.getItem("telefono");
+            const saldo = parseFloat(localStorage.getItem("saldo_" + telefono) || 0);
+
+            // Actualiza el saldo disponible en la página
+            const saldoDisponibleElement = document.getElementById('saldoDisponible');
+            saldoDisponibleElement.textContent = `$${saldo.toFixed(2)}`;
+
+            const contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+            const vipActivo = localStorage.getItem("vipActivo_" + telefono);
+
+            // Si no hay tareas y hay una suscripción activa, eliminarla
+            if (contadorTareas === 0 && vipActivo) {
+                localStorage.removeItem("vipActivo_" + telefono);
+            }
+
+            if (contadorTareas === 0 && !vipActivo) {
+                const suscripciones = [
+                    { vip: 1, saldoRequerido: 96, tareasAgregadas: 8 },
+                    { vip: 2, saldoRequerido: 250, tareasAgregadas: 10 },
+                    { vip: 3, saldoRequerido: 450, tareasAgregadas: 12 },
+                    { vip: 4, saldoRequerido: 700, tareasAgregadas: 14 },
+                    { vip: 5, saldoRequerido: 1000, tareasAgregadas: 16 },
+                    { vip: 6, saldoRequerido: 1300, tareasAgregadas: 18 }
+                ];
+
+                // Buscar la mejor suscripción disponible según el saldo
+                for (let i = suscripciones.length - 1; i >= 0; i--) {
+                    if (saldo >= suscripciones[i].saldoRequerido) {
+                        mostrarConfirmacion(suscripciones[i].vip, suscripciones[i].saldoRequerido, suscripciones[i].tareasAgregadas);
+                        break;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

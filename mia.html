@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Mía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold text-center mb-4">Bienvenido a tu cuenta</h2>
+        <div id="accountDetails" class="text-center">
+            <p><strong>Número de celular:</strong> <span id="userPhone"></span></p>
+            <p><strong>Usuario:</strong> <span id="userName"></span></p>
+            <!-- Aquí puedes agregar más detalles del usuario -->
+        </div>
+    </div>
+
+    <script>
+        // Recuperar el número de teléfono y nombre de usuario guardados en localStorage
+        const phone = localStorage.getItem("telefono");
+        const username = localStorage.getItem("username"); // Recuperamos el nombre de usuario
+
+        if (phone) {
+            document.getElementById("userPhone").textContent = phone;
+        } else {
+            document.getElementById("userPhone").textContent = "No se ha encontrado el número.";
+        }
+
+        if (username) {
+            document.getElementById("userName").textContent = username; // Mostramos el nombre de usuario
+        } else {
+            document.getElementById("userName").textContent = "No se ha encontrado el nombre de usuario.";
+        }
+    </script>
+
+<footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+    <a href="PRUEBA.html" class="text-blue-600 font-bold">📋 Tareas</a>
+    <a href="Prueba 2.html" class="text-blue-600 font-bold">📦 Orden</a>
+</footer>
+
+</body>
+</html>

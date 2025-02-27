@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white p-4 flex items-center justify-left">
+        <div class="flex space-x-4">
+            <button id="btnPedidosPendientes" class="bg-yellow-500 text-black px-4 py-2 rounded">Pedidos Pendientes</button>
+            <button id="btnPedidosCompletados" class="bg-green-500 text-white px-4 py-2 rounded">Pedidos Completados</button>
+        </div>
+    </header>
+
+    <section class="p-4 bg-white shadow-md rounded mt-4 mx-4">
+        <div id="pedidosPendientes" class="grid grid-cols-1 gap-4 hidden"></div>
+        <div id="pedidosCompletados" class="grid grid-cols-1 gap-4 hidden"></div>
+
+        <div id="pedidoCompletado" class="hidden mt-4 text-center text-green-600 font-bold">
+            Pedido Completado
+        </div>
+
+        <div id="mensajeError" class="hidden mt-4 text-center text-red-600 font-bold">
+            Saldo insuficiente para confirmar el pedido.
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let telefono = localStorage.getItem("telefono");
+            if (!telefono) {
+                alert("No se encontró un teléfono válido. Inicia sesión.");
+                window.location.href = "Registro.html";
+                return;
+            }
+    
+            let saldoTareas = parseFloat(localStorage.getItem("saldo_" + telefono) || 28);
+            let gananciasHoy = parseFloat(localStorage.getItem("gananciasHoy") || 0);
+            let gananciasTotales = parseFloat(localStorage.getItem("gananciasTotales") || 0);  // Ganancias totales
+            let tareasPorCompletar = parseInt(localStorage.getItem("tareasPorCompletar") || 0);
+            let tiempoRestante = parseInt(localStorage.getItem("tiempoRestante") || 10800); // 3 horas en segundos
+    
+            function actualizarTemporizador() {
+                let contadorElemento = document.getElementById("contadorTiempo");
+                let confirmarBtn = document.getElementById("confirmarPedidoBtn");
+    
+                let horas = Math.floor(tiempoRestante / 3600);
+                let minutos = Math.floor((tiempoRestante % 3600) / 60);
+                let segundos = tiempoRestante % 60;
+    
+                contadorElemento.innerText = `${horas}:${minutos}:${segundos}`;
+    
+                if (tiempoRestante <= 0) {
+                    confirmarBtn.disabled = true;
+                    confirmarBtn.classList.add("bg-gray-500", "cursor-not-allowed");
+                    confirmarBtn.classList.remove("bg-green-500");
+    
+                    localStorage.setItem("tareaCongelada", 1);
+                    localStorage.setItem("saldoRetenido", saldoTareas);
+                } else {
+                    tiempoRestante--;
+                    localStorage.setItem("tiempoRestante", tiempoRestante);
+                    setTimeout(actualizarTemporizador, 1000);
+                }
+            }
+    
+            function mostrarPedidosPendientes() {
+                let pedidoPendiente = localStorage.getItem("pedidoPendiente");
+                if (pedidoPendiente) {
+                    let pedido = JSON.parse(pedidoPendiente);
+                    let pedidosPendientesDiv = document.getElementById("pedidosPendientes");
+                    let pedidoHtml = 
+                        `<div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
+                            <img src="${pedido.imagen}" alt="Imagen Pedido" class="w-20 h-20 object-cover mr-4">
+                            <div class="flex-1">
+                                <p class="font-bold">${pedido.nombre}</p>
+                                <p class="text-gray-700">Ganancia: Mex$${pedido.ganancias}</p>
+                                <p class="text-gray-700">Saldo Requerido: Mex$96</p>
+                                <p class="text-gray-700">Saldo Disponible: <span id="saldoDisponible">Mex$${saldoTareas}</span></p>
+                                <p class="text-red-500">Tiempo restante: <span id="contadorTiempo"></span></p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <button class="bg-green-500 text-white px-4 py-2 rounded mt-2" id="confirmarPedidoBtn">Confirmar</button>
+                            </div>
+                        </div>`;
+                    pedidosPendientesDiv.innerHTML = pedidoHtml;
+                    document.getElementById("pedidosPendientes").classList.remove("hidden");
+    
+                    actualizarTemporizador();
+    
+                    // Verificar si el saldo es suficiente antes de habilitar el botón
+                    verificarHabilitarConfirmarBtn();
+    
+                    document.getElementById("confirmarPedidoBtn").addEventListener("click", function() {
+                        confirmarPedido(pedido);
+                    });
+                }
+            }
+    
+            function verificarHabilitarConfirmarBtn() {
+                let confirmarBtn = document.getElementById("confirmarPedidoBtn");
+    
+                // Si el saldo es suficiente y el tiempo no ha expirado, habilitamos el botón
+                if (tiempoRestante > 0 && saldoTareas >= 96) {
+                    confirmarBtn.disabled = false;
+                    confirmarBtn.classList.remove("bg-gray-500", "cursor-not-allowed");
+                    confirmarBtn.classList.add("bg-green-500");
+                } else {
+                    confirmarBtn.disabled = true;
+                    confirmarBtn.classList.add("bg-gray-500", "cursor-not-allowed");
+                    confirmarBtn.classList.remove("bg-green-500");
+                }
+            }
+    
+            function confirmarPedido(pedido) {
+                // Verificar si el saldo es suficiente para confirmar el pedido
+                if (saldoTareas < 96) {
+                    document.getElementById("mensajeError").classList.remove("hidden");
+                    return;
+                }
+    
+                // Sumar la ganancia al saldo disponible
+                let nuevoSaldo = saldoTareas + pedido.ganancias;
+                localStorage.setItem("saldo_" + telefono, nuevoSaldo);
+    
+                // Actualizar las ganancias de hoy
+                gananciasHoy += pedido.ganancias;
+                localStorage.setItem("gananciasHoy", gananciasHoy);
+    
+                // Actualizar las ganancias totales
+                
+    
+                // Agregar el pedido a los completados
+                let pedidosCompletados = JSON.parse(localStorage.getItem("pedidosCompletados")) || [];
+                pedidosCompletados.push(pedido);
+                localStorage.setItem("pedidosCompletados", JSON.stringify(pedidosCompletados));
+    
+                // Limpiar el pedido pendiente y el temporizador
+                localStorage.removeItem("pedidoPendiente");
+                localStorage.removeItem("tiempoRestante");
+    
+                // Actualizar tareas por completar
+                let tareasPorCompletar = parseInt(localStorage.getItem("tareasPorCompletar") || 0);
+                if (tareasPorCompletar > 0) {
+                    tareasPorCompletar--;
+                    localStorage.setItem("tareasPorCompletar", tareasPorCompletar);
+                }
+    
+                // Mostrar el mensaje de "Pedido Completado"
+                document.getElementById("pedidoCompletado").classList.remove("hidden");
+                setTimeout(function() {
+                    document.getElementById("pedidoCompletado").classList.add("hidden");
+                    mostrarPedidosCompletados();
+                    document.getElementById("pedidosPendientes").classList.add("hidden");
+                }, 1500);
+            }
+    
+            function mostrarPedidosCompletados() {
+                let pedidosCompletados = JSON.parse(localStorage.getItem("pedidosCompletados")) || [];
+                let pedidosCompletadosDiv = document.getElementById("pedidosCompletados");
+                if (pedidosCompletados.length > 0) {
+                    let pedidosHtml = pedidosCompletados.map(pedido =>  
+                        `<div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
+                            <img src="${pedido.imagen}" alt="Imagen Pedido" class="w-20 h-20 object-cover mr-4">
+                            <div class="flex-1">
+                                <p class="font-bold">${pedido.nombre}</p>
+                                <p class="text-gray-700">Ganancia: Mex$${pedido.ganancias}</p>
+                            </div>
+                        </div>`).join("");
+                    pedidosCompletadosDiv.innerHTML = pedidosHtml;
+                } else {
+                    pedidosCompletadosDiv.innerHTML = "<p>No hay pedidos completados.</p>";
+                }
+                pedidosCompletadosDiv.classList.remove("hidden");
+            }
+    
+            mostrarPedidosPendientes();
+    
+            document.getElementById("btnPedidosPendientes").addEventListener("click", function() {
+                mostrarPedidosPendientes();
+                document.getElementById("pedidosCompletados").classList.add("hidden");
+            });
+    
+            document.getElementById("btnPedidosCompletados").addEventListener("click", function() {
+                mostrarPedidosCompletados();
+                document.getElementById("pedidosPendientes").classList.add("hidden");
+            });
+            
+        });
+    </script>
+    
+        <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md p-2 flex justify-around">
+            <a href="AmazonMAIN.html" class="blue-600 font-bold">🏠 Portada</a>
+            <a href="pago.html" class="text-blue-600 font-bold">💰 Recargar</a>
+            <a href="Tareas.html" class="text-blue-600 font-bold">📋 Tareas</a>
+            <a href="Orden.html" class="text-blue-600 font-bold">📦 Orden</a>
+            <a href="mia.html" class="text-blue-600 font-bold">👤 Mío</a>
+        </footer>
+
+</body>
+</html>

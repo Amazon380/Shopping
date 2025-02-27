@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cuentas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Cuentas Registradas</h2>
+        <div id="cuentasLista" class="text-sm text-gray-700"></div>
+    </div>
+
+    <script>
+        function mostrarCuentas() {
+            let cuentas = JSON.parse(localStorage.getItem("cuentas")) || [];
+            let listaHTML = "";
+            cuentas.forEach((cuenta, index) => {
+                let saldo = localStorage.getItem("saldo_" + cuenta.celular) || "0"; 
+                let tareas = localStorage.getItem("tareas_" + cuenta.celular) || 5;
+                let pedidosPendientes = JSON.parse(localStorage.getItem("pedidos_" + cuenta.celular)) || [];
+
+                listaHTML += `
+                    <div class="p-3 border-b border-gray-300">
+                        <p><strong>Número de Celular:</strong> ${cuenta.celular}</p>
+                        <p><strong>Usuario:</strong> ${cuenta.username}</p>
+                        <p><strong>Contraseña de Inicio:</strong> ${cuenta.password}</p>
+                        <p><strong>Contraseña de Retiro:</strong> ${cuenta.passwordRetiro}</p>
+                        <p><strong>Saldo:</strong> Mex$${saldo}</p>
+                        <p><strong>Tareas:</strong> ${tareas}</p>
+                        <button onclick="editarSaldo('${cuenta.celular}')" class="mt-2 text-blue-500">Editar Saldo</button>
+                        <button onclick="editarTareas('${cuenta.celular}')" class="mt-2 text-yellow-500">Editar Tareas</button>
+                        <button onclick="eliminarCuenta(${index})" class="mt-2 text-red-500">Eliminar Cuenta</button>
+                        <button onclick="eliminarPedidoPendiente('${cuenta.celular}')" class="mt-2 text-green-500">Eliminar Pedido Pendiente</button>
+                    </div>
+                `;
+            });
+            document.getElementById("cuentasLista").innerHTML = listaHTML || "<p class='text-center'>No hay cuentas registradas.</p>";
+        }
+
+        // Editar saldo de la cuenta
+        function editarSaldo(celular) {
+            let saldoActual = localStorage.getItem("saldo_" + celular) || "0"; 
+            let nuevoSaldo = prompt("Introduce el nuevo saldo:", saldoActual);
+
+            if (!isNaN(nuevoSaldo) && nuevoSaldo.trim() !== "") {
+                localStorage.setItem("saldo_" + celular, parseFloat(nuevoSaldo).toFixed(2)); 
+                alert("Saldo actualizado correctamente.");
+                mostrarCuentas();
+            } else {
+                alert("Por favor, introduce un número válido.");
+            }
+        }
+
+        // Editar tareas de la cuenta
+        function editarTareas(celular) {
+            let tareasActuales = localStorage.getItem("tareas_" + celular) || 5;
+            let nuevasTareas = prompt("Introduce el nuevo número de tareas:", tareasActuales);
+
+            if (!isNaN(nuevasTareas) && nuevasTareas.trim() !== "") {
+                localStorage.setItem("tareas_" + celular, parseInt(nuevasTareas));
+                alert(`Tareas actualizadas a ${nuevasTareas}.`);
+                mostrarCuentas();
+
+                // Emitir evento para actualizar tareas en la otra página
+                localStorage.setItem("contadorTareas", nuevasTareas);
+                window.dispatchEvent(new Event('storage'));  // Emitir evento de almacenamiento
+            } else {
+                alert("Por favor, introduce un número válido.");
+            }
+        }
+
+        // Eliminar cuenta
+        function eliminarCuenta(index) {
+            let cuentas = JSON.parse(localStorage.getItem("cuentas")) || [];
+            let celular = cuentas[index].celular;
+            cuentas.splice(index, 1);
+            localStorage.setItem("cuentas", JSON.stringify(cuentas));
+            localStorage.removeItem("saldo_" + celular);
+            localStorage.removeItem("tareas_" + celular); 
+            mostrarCuentas();
+        }
+
+        // Eliminar pedidos pendientes
+        function eliminarPedidoPendiente(celular) {
+            let cuentas = JSON.parse(localStorage.getItem("cuentas")) || [];
+            let pedidosPendientes = JSON.parse(localStorage.getItem("pedidos_" + celular)) || [];
+
+            // Verifica si hay pedidos pendientes
+            if (pedidosPendientes && pedidosPendientes.length > 0) {
+                pedidosPendientes.pop(); // Elimina el último pedido pendiente
+                localStorage.setItem("pedidos_" + celular, JSON.stringify(pedidosPendientes));
+                alert("Último pedido pendiente eliminado.");
+            } else {
+                alert("No hay pedidos pendientes para eliminar.");
+            }
+
+            mostrarCuentas();
+        }
+
+        // Actualizar cuentas al detectar cambios en localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'cuentas' || e.key.startsWith('saldo_') || e.key.startsWith('tareas_') || e.key.startsWith('pedidos_')) {
+                mostrarCuentas();
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", mostrarCuentas);
+    </script>
+</body>
+</html>

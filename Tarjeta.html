@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Tarjeta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #90EE90;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background: #3bddd5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Agregar Tarjeta</h2>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" style="width: 90%; padding: 10px; margin: 10px 0;">
+
+        <label for="banco">Banco:</label>
+        <input type="text" id="banco" style="width: 90%; padding: 10px; margin: 10px 0;">
+
+        <label for="cuenta">Número de Cuenta:</label>
+        <input type="text" id="cuenta" style="width: 90%; padding: 10px; margin: 10px 0;">
+
+        <button class="button" onclick="guardarTarjeta()">Guardar Tarjeta</button>
+
+        <button class="button" id="regresar" onclick="window.location.href='AmazonMAIN.html'">🏠 Volver</button>
+
+    </div>
+
+    
+
+    <script>
+        function guardarTarjeta() {
+            let nombre = document.getElementById("nombre").value;
+            let banco = document.getElementById("banco").value;
+            let cuenta = document.getElementById("cuenta").value;
+
+            if (nombre && banco && cuenta) {
+                let tarjetaInfo = `${nombre} - ${banco} - ${cuenta}`;
+                localStorage.setItem("tarjeta", tarjetaInfo);
+                alert("Tarjeta guardada correctamente.");
+                window.location.href = "presentacion.html"; 
+            } else {
+                alert("Por favor, completa todos los campos.");
+            }
+        }
+    </script>
+</body>
+</html>
+

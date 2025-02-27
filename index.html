@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión / Registrarse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <div class="flex justify-center mb-6">
+            <button id="loginTab" class="w-1/2 py-2 bg-blue-500 text-white rounded-t-lg focus:outline-none">Iniciar sesión</button>
+            <button id="registerTab" class="w-1/2 py-2 bg-gray-200 rounded-t-lg focus:outline-none">Registrarse</button>
+        </div>
+
+        <div id="loginForm">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Iniciar sesión</h2>
+            <form id="login">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Número de celular</label>
+                    <input type="text" id="loginPhone" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Ingresa tu número" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <input type="password" id="loginPassword" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Ingresa tu contraseña" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-lg">Iniciar sesión</button>
+            </form>
+            <p class="mt-4 text-center text-sm">¿No tienes cuenta? <a href="#" class="text-blue-500" id="toRegister">Regístrate aquí</a></p>
+            <div id="loginError" class="text-red-500 text-center mt-2 hidden">Número o contraseña incorrectos.</div>
+        </div>
+
+        <div id="registerForm" class="hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Registrarse</h2>
+            <form id="register">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Número de celular</label>
+                    <input type="text" id="registerPhone" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Ingresa tu número" required>
+                    <div id="phoneError" class="text-red-500 text-sm hidden">El número debe tener entre 10 y 13 dígitos y contener solo números.</div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Nombre de usuario</label>
+                    <input type="text" id="registerUsername" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Elige un nombre de usuario" required>
+                    <div id="usernameError" class="text-red-500 text-sm hidden">El nombre de usuario debe tener al menos 4 palabras y 2 números.</div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Contraseña de inicio</label>
+                    <input type="password" id="registerPassword" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Crea una contraseña" required>
+                    <div id="passwordError" class="text-red-500 text-sm hidden">La contraseña debe tener al menos 4 palabras y 2 números.</div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Contraseña de retiro de fondo</label>
+                    <input type="password" id="withdrawPassword" class="w-full p-3 border border-gray-300 rounded-lg mt-1" placeholder="Crea una contraseña de retiro" required>
+                    <div id="withdrawPasswordError" class="text-red-500 text-sm hidden">La contraseña de retiro debe tener al menos 4 palabras y 2 números.</div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Código de verificación:</label>
+                    <input type="text" id="verificationCode" class="w-full p-3 border border-gray-300 rounded-lg mt-1" value="558013" disabled>
+                </div>
+                <button type="submit" class="w-full py-3 bg-green-500 text-white rounded-lg">Registrarse</button>
+            </form>
+            <p class="mt-4 text-center text-sm">¿Ya tienes cuenta? <a href="#" class="text-blue-500" id="toLogin">Inicia sesión aquí</a></p>
+            <div id="registerError" class="text-red-500 text-center mt-2 hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Switching between Login and Register
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        loginTab.addEventListener('click', () => {
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        document.getElementById('toRegister').addEventListener('click', () => {
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        document.getElementById('toLogin').addEventListener('click', () => {
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+
+        // Registro
+        document.getElementById('register').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const phone = document.getElementById('registerPhone').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const withdrawPassword = document.getElementById('withdrawPassword').value;
+            const verificationCode = document.getElementById('verificationCode').value;
+
+            // Validación de número de celular (solo números, longitud entre 10 y 13)
+            const phoneRegex = /^\d{10,13}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('phoneError').classList.add('hidden');
+            }
+
+            // Validación de nombre de usuario (mínimo 4 palabras y 2 números)
+            const usernameRegex = /^(?=(.*\d){2})(?=(.*\w){4,})/;
+            if (!usernameRegex.test(username)) {
+                document.getElementById('usernameError').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('usernameError').classList.add('hidden');
+            }
+
+            // Validación de contraseñas (mínimo 4 palabras y 2 números)
+            const passwordRegex = /^(?=(.*\d){2})(?=(.*\w){4,})/;
+            if (!passwordRegex.test(password)) {
+                document.getElementById('passwordError').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('passwordError').classList.add('hidden');
+            }
+
+            if (!passwordRegex.test(withdrawPassword)) {
+                document.getElementById('withdrawPasswordError').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('withdrawPasswordError').classList.add('hidden');
+            }
+
+            if (phone === '' || username === '' || password === '' || withdrawPassword === '' || verificationCode === '') {
+                document.getElementById('registerError').innerText = 'Por favor, completa todos los campos.';
+                document.getElementById('registerError').classList.remove('hidden');
+            } else if (verificationCode !== '558013') {
+                document.getElementById('registerError').innerText = 'Código de verificación incorrecto.';
+                document.getElementById('registerError').classList.remove('hidden');
+            } else {
+                let cuentas = JSON.parse(localStorage.getItem("cuentas")) || [];
+
+                // Verificar si el teléfono ya está registrado
+                const telefonoExistente = cuentas.find(cuenta => cuenta.celular === phone);
+                if (telefonoExistente) {
+                    alert("Este número ya está registrado. Por favor, inicie sesión.");
+                    return;
+                }
+
+                // Guardar los datos en localStorage
+                cuentas.push({ celular: phone, username, password, passwordRetiro: withdrawPassword, tareas: 0 });
+
+                let saldo = 28; // Saldo inicial
+                let gananciasHoy = 0; // Ganancias hoy inicializadas
+                let ingresosTotales = saldo; // Total de ingresos
+
+                localStorage.setItem("cuentas", JSON.stringify(cuentas));
+                localStorage.setItem("telefono", phone);
+                localStorage.setItem("username", username);
+                localStorage.setItem("saldo_" + phone, saldo.toFixed(2)); // Guardar saldo por teléfono
+                localStorage.setItem("gananciasHoy_" + phone, gananciasHoy.toFixed(2)); // Guardar ganancias por teléfono
+                localStorage.setItem("ingresosTotales_" + phone, ingresosTotales.toFixed(2)); // Guardar ingresos totales
+
+                window.location.href = "AmazonMAIN.html"; // Página de Cuentas
+            }
+        });
+
+        // Iniciar sesión
+        document.getElementById('login').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const loginPhone = document.getElementById('loginPhone').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+            let cuentas = JSON.parse(localStorage.getItem("cuentas")) || [];
+
+            const cuentaValida = cuentas.find(cuenta => cuenta.celular === loginPhone && cuenta.password === loginPassword);
+
+            if (cuentaValida) {
+                window.location.href = "AmazonMAIN.html"; // Página de cuentas después de iniciar sesión
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

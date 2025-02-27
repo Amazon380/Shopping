@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Presentación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(to right, #c4a582, #b08d68);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #7d89f5;
+            color: white;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background: #5b6edc;
+        }
+        .disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Saldo disponible<br><span id="saldo">Mex$28.00</span></div>
+        
+        <div class="content">
+            <p><strong>Retiro mínimo:</strong> Mex$150</p>
+            <label for="amount">Introduzca el importe de retiro:</label>
+            <input type="number" id="amount" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <label for="password">Ingresa la contraseña de fondos:</label>
+            <input type="password" id="password" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <button class="button disabled" id="confirmar" disabled>Confirmar retiro</button>
+            <p id="mensaje" style="color: green; font-weight: bold; display: none;">Retiro exitoso</p>
+            <button class="button" id="regresar" onclick="window.location.href='AmazonMAIN.html'">🏠 Volver</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el número de teléfono y el saldo desde localStorage
+            const telefono = localStorage.getItem("telefono");
+            const saldoGuardado = localStorage.getItem("saldo_" + telefono);
+            
+            if (saldoGuardado === null) {
+                alert("No se encontró el saldo para este usuario.");
+                window.location.href = "Tareas.html"; // Redirigir si no se encuentra el saldo
+            }
+
+            document.getElementById("saldo").innerText = `Mex$${saldoGuardado}`;
+
+            // Validar formulario de retiro
+            document.getElementById('amount').addEventListener('input', function() {
+                const amount = parseFloat(document.getElementById('amount').value);
+                const saldo = parseFloat(saldoGuardado);
+                const botonConfirmar = document.getElementById('confirmar');
+                if (amount >= 150 && amount <= saldo) {
+                    botonConfirmar.classList.remove('disabled');
+                    botonConfirmar.disabled = false;
+                } else {
+                    botonConfirmar.classList.add('disabled');
+                    botonConfirmar.disabled = true;
+                }
+            });
+
+            // Confirmar retiro
+            document.getElementById('confirmar').addEventListener('click', function() {
+                const amount = parseFloat(document.getElementById('amount').value);
+                const saldo = parseFloat(saldoGuardado);
+                const password = document.getElementById('password').value;
+
+                // Verificar si la contraseña de retiro es correcta
+                if (password === localStorage.getItem("passwordRetiro_" + telefono)) {
+                    // Actualizar el saldo después del retiro
+                    const nuevoSaldo = saldo - amount;
+                    localStorage.setItem("saldo_" + telefono, nuevoSaldo.toFixed(2));
+
+                    // Mostrar el mensaje de éxito y actualizar la interfaz
+                    document.getElementById('mensaje').style.display = 'block';
+                    document.getElementById('saldo').innerText = `Mex$${nuevoSaldo.toFixed(2)}`;
+                    document.getElementById('confirmar').classList.add('disabled');
+                    document.getElementById('confirmar').disabled = true;
+                } else {
+                    alert("Contraseña de retiro incorrecta.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
