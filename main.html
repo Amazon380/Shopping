@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Personalización de colores */
+        body {
+            background-color: #f5f5f5; /* Gris claro de fondo */
+            color: #333; /* Texto oscuro para contraste */
+        }
+
+        .bg-gray-light {
+            background-color: #d3d3d3; /* Gris claro */
+        }
+
+        .text-gray-dark {
+            color: #333; /* Texto oscuro */
+        }
+
+        .bg-gray-darker {
+            background-color: #b0b0b0; /* Gris más oscuro para hover */
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-dark">
+    <header class="bg-black text-white p-4 flex items-center">
+        <img src="https://media0.giphy.com/media/l3q2Ok1vk3K5BPX44/giphy.gif" alt="" class="w-6 h-6 mr-2">
+        <h1 class="text-lg font-bold flashing-text">V&s Projects S.A de C.V</h1>
+
+<style>
+@keyframes goldToWhite {
+    0% { color: gold; }     /* Empieza en dorado */
+    50% { color: white; }   /* Transición a blanco */
+    100% { color: gold; }   /* Vuelve a dorado */
+}
+
+.flashing-text {
+    animation: goldToWhite 4s infinite ease-in-out; /* Transición fluida */
+}
+</style>
+
+    </header>
+    
+    <section class="relative">
+        <img src="https://scontent.fmex1-2.fna.fbcdn.net/v/t39.30808-6/481277418_700396928983622_4335836417173929743_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=XHYLVfm6jj0Q7kNvgEJe6Mq&_nc_oc=Adi_ya-SyTeTT5LINisGko1HkQTgcIK8bWCH4zuWJlabd8FEecekZO4MdpkRJnWzuc6ZM2xVvbV6ze1GizWCnVDm&_nc_zt=23&_nc_ht=scontent.fmex1-2.fna&_nc_gid=ApVIIrNY4ZrM7FVlODkvStq&oh=00_AYCAgEFCfHNOVkEET53hSPNyBYlbWsggX8aP0Qeem4-SpQ&oe=67CBA8E2" alt="" class="w-full">
+    </section>
+
+    <style>
+        /* Estilos del botón LED */
+        .btn-neon {
+            position: relative;
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8),
+                        0 0 40px rgba(0, 255, 255, 0.6),
+                        0 0 80px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Colores específicos de los botones */
+        .btn-orange { background-color: #ff4500; }
+        .btn-blue { background-color: #007bff; }
+        .btn-green { background-color: #00ff00; }
+
+        /* Efecto de brillo al pasar el mouse */
+        .btn-neon:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1),
+                        0 0 60px rgba(0, 255, 255, 0.9),
+                        0 0 100px rgba(0, 255, 255, 0.7);
+            transform: scale(1.1);
+        }
+
+        /* Ajuste de espacio entre botones */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Presentación alineado a la izquierda */
+        .left-align {
+            margin-right: auto;
+        }
+    </style>
+
+<div class="p-4">
+    <div class="flex justify-between space-x-4">
+        <a href="introducion.html" class="btn-neon btn-orange">Introducción</a>
+        <a href="pago.html" class="btn-neon btn-blue absolute-center">Recargar</a>
+        <a href="presentacion.html" class="btn-neon btn-blue">Retiro</a>
+        <a href="carta.html" class="btn-neon btn-green text-xs py-1 px-3 inline-flex items-center justify-center">Carta</a>
+    </div>
+</div>
+    
+    <footer class="fixed bottom-0 left-0 right-0 bg-black shadow-md p-1 flex justify-around">
+        <a href="main.html" class="text-white font-bold">🏠 Portada</a>
+        <a href="PRUEBA.html" class="text-blue-600 font-bold">📋 Tareas</a>
+        <a href="Prueba 2.html" class="text-blue-600 font-bold">📦 Orden</a>
+        <a href="mia.html" class="text-blue-600 font-bold">👤 Mío</a>
+    </footer>
+    
+    
+    <section class="p-4 bg-white shadow-md rounded mt-4">
+        <div class="flex flex-col items-center mb-4">
+            <h2 class="text-lg font-bold">Información personal</h2>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Ingresos totales:</p>
+                <p class="font-bold text-green-600">Mex$0.00</p>
+            </div>
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Ganancias de hoy:</p>
+                <p class="font-bold text-green-600" id="gananciasHoy">$0.00</p>
+            </div>            
+            <div class="flex justify-between w-full max-w-md">
+                <p class="text-gray-700">Saldo disponible:</p>
+                <p class="font-bold text-green-600" id="saldoDisponible">Mex$0.00</p>
+            </div>
+        </div>
+    </section>
+    
+
+    <section class="p-4 bg-white shadow-md rounded mt-4">
+        <div class="flex flex-col items-center">
+            <h2 class="text-lg font-bold rainbow-text">Suscripciones</h2>
+        </div>
+        
+        <style>
+        @keyframes rainbow {
+            0% { color: red; }
+            16% { color: orange; }
+            33% { color: rgb(69, 156, 196); }
+            50% { color: green; }
+            66% { color: blue; }
+            83% { color: indigo; }
+            100% { color: violet; }
+        }
+        
+        .rainbow-text {
+            animation: rainbow 3s infinite linear;
+        }
+        </style>
+
+<div class="relative w-full overflow-hidden mt-24">
+    <div id="scrollContainer" class="flex gap-6 overflow-x-auto whitespace-nowrap scroll-smooth px-8 py-4 mb-12">
+        <!-- Tarjeta 1 (Borde Celeste) -->
+        <div id="card1" class="flex flex-col items-center justify-center min-w-[300px] bg-white shadow-lg rounded-xl p-6 h-[350px] border-4 border-cyan-400">
+            <img src="https://cdn.dribbble.com/users/1194206/screenshots/12028922/media/144a31183a201089c07141d49e7ccf40.gif" width="150">
+            <h3 class="mt-4 text-lg font-semibold">Información de la Tarjeta 1</h3>
+            <p class="text-sm mt-2">info.</p>
+            <button class="bg-yellow-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(1, 96, 8)">Invertir 166%</button>
+        </div>
+        <!-- Tarjeta 2 (Borde Morado Claro) -->
+        <div id="card2" class="flex flex-col items-center justify-center min-w-[300px] bg-white shadow-lg rounded-xl p-6 h-[350px] border-4 border-indigo-300">
+            <img src="https://i.pinimg.com/736x/80/82/4f/80824fd7dac9766e5d9f6c6cb0c02a96.jpg" width="150">
+            <h3 class="mt-4 text-lg font-semibold">Información de la Tarjeta 2</h3>
+            <p class="text-sm mt-2">Info</p>
+            <button class="bg-yellow-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(2, 250, 10)">Invertir 125%</button>
+        </div>
+        <!-- Tarjeta 3 (Borde Tipo Fuego) -->
+        <div id="card3" class="flex flex-col items-center justify-center min-w-[300px] bg-white shadow-lg rounded-xl p-6 h-[350px] border-4 border-yellow-500">
+            <img src="https://i.pinimg.com/736x/80/82/4f/80824fd7dac9766e5d9f6c6cb0c02a96.jpg" width="150">
+            <h3 class="mt-4 text-lg font-semibold">Información de la Tarjeta 3</h3>
+            <p class="text-sm mt-2">Info</p>
+            <button class="bg-purple-500 text-white px-4 py-2 rounded mt-2" onclick="mostrarConfirmacion(3, 450, 12)">Invertir 440%</button>
+        </div>
+    </div>
+
+    </section>
+
+    <!-- Ventana de confirmación -->
+    <div id="confirmacionOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Aceptar Orden</h3>
+            <p class="text-sm mb-4">Los pedidos no se pueden saltar. Si no se completan, no se podrá retirar los fondos.</p>
+            <button id="aceptarBtn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Aceptar</button>
+            <button id="cancelarBtn" class="bg-gray-300 text-black px-4 py-2 rounded mt-2" onclick="cerrarConfirmacion()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Ventana de "Órdenes encontradas" -->
+    <div id="ordenesEncontradasOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Órdenes Encontradas</h3>
+            <p class="text-sm mb-4">Se han encontrado órdenes disponibles.</p>
+        </div>
+    </div>
+
+    <!-- Ventana de "Ya tienes una suscripción activada" -->
+    <div id="suscripcionActivaOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Ya tienes una suscripción activada</h3>
+            <p class="text-sm mb-4">No puedes activar otra suscripción.</p>
+        </div>
+    </div>
+
+    <!-- Ventana de "Saldo Insuficiente" -->
+    <div id="saldoInsuficienteOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Recargar saldo</h3>
+            <p class="text-sm mb-4">Tu saldo es insuficiente para activar esta suscripción.</p>
+        </div>
+    </div>
+
+    <!-- Ventana de "Suscripción ya completada" -->
+<div id="suscripcionCompletadaOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg text-center">
+        <h3 class="text-xl font-bold mb-4">Esta suscripción ya se completó</h3>
+    </div>
+</div>
+    
+
+    <div id="confirmacionOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Aceptar Orden</h3>
+            <p class="text-sm mb-4">Los pedidos no se pueden saltar. Si no se completan, no se podrá retirar los fondos.</p>
+            <button id="aceptarBtn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Aceptar</button>
+            <button id="cancelarBtn" class="bg-gray-300 text-black px-4 py-2 rounded mt-2" onclick="cerrarConfirmacion()">Cancelar</button>
+        </div>
+    </div>
+
+  
+    <div id="ordenesEncontradasOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Órdenes Encontradas</h3>
+            <p class="text-sm mb-4">Se han encontrado órdenes disponibles.</p>
+        </div>
+    </div>
+
+    
+    <div id="suscripcionActivaOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Ya tienes una suscripción activada</h3>
+            <p class="text-sm mb-4">No puedes activar otra suscripción.</p>
+        </div>
+    </div>
+
+   
+    <div id="saldoInsuficienteOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <h3 class="text-xl font-bold mb-4">Recargar saldo</h3>
+            <p class="text-sm mb-4">Tu saldo es insuficiente para activar esta suscripción.</p>
+        </div>
+    </div>
+
+    
+<div id="suscripcionCompletadaOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg text-center">
+        <h3 class="text-xl font-bold mb-4">Esta suscripción ya se completó</h3>
+    </div>
+</div>
+
+<style>
+    #scrollContainer {
+        transition: transform 0.5s ease-in-out; /* Efecto de animación suave */
+    }
+
+    /* Efecto al pasar el ratón sobre las tarjetas */
+    .flex-col:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+</style>
+
+
+<script>
+    // Función para desplazar al centro la tarjeta específica
+    function scrollToCard(cardNumber) {
+        const scrollContainer = document.getElementById('scrollContainer');
+        const card = document.getElementById('card' + cardNumber);
+        const cardOffset = card.offsetLeft;
+        const cardWidth = card.offsetWidth;
+        const containerWidth = scrollContainer.offsetWidth;
+
+        const scrollPosition = cardOffset - (containerWidth / 2) + (cardWidth / 2);
+
+        scrollContainer.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    }
+
+    // Función para centrar automáticamente la tarjeta más cercana cuando se hace scroll
+    function centerOnScroll() {
+        const scrollContainer = document.getElementById('scrollContainer');
+        const containerWidth = scrollContainer.offsetWidth;
+
+        // Obtener todas las tarjetas
+        const cards = document.querySelectorAll('[id^="card"]');
+        
+        let closestCard = null;
+        let closestOffset = Infinity;
+
+        cards.forEach(card => {
+            const cardOffset = card.offsetLeft;
+            const cardWidth = card.offsetWidth;
+            const distanceFromCenter = Math.abs(cardOffset + cardWidth / 2 - scrollContainer.scrollLeft - containerWidth / 2);
+            
+            if (distanceFromCenter < closestOffset) {
+                closestOffset = distanceFromCenter;
+                closestCard = card;
+            }
+        });
+
+        // Calcular la posición de scroll necesaria para centrar la tarjeta
+        const cardOffset = closestCard.offsetLeft;
+        const cardWidth = closestCard.offsetWidth;
+
+        const scrollPosition = cardOffset - (containerWidth / 2) + (cardWidth / 2);
+        
+        scrollContainer.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    }
+
+    // Centrar la primera tarjeta al cargar la página
+    window.onload = function() {
+        scrollToCard(1);
+    };
+</script>
+
+<script>
+                
+  function mostrarConfirmacion(vipNumber, saldoRequerido, tareasAgregadas) {
+    const telefono = localStorage.getItem("telefono");
+    const saldo = parseFloat(localStorage.getItem("saldo_" + telefono) || 0);
+    const contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+    const vipActivo = localStorage.getItem("vipActivo_" + telefono);
+
+    // Verificar si este VIP ya fue completado por esta cuenta
+    const vipCompletado = localStorage.getItem("vipCompletado_" + telefono + "_" + vipNumber);
+    if (vipCompletado) {
+        const suscripcionCompletadaOverlay = document.getElementById("suscripcionCompletadaOverlay");
+        suscripcionCompletadaOverlay.classList.remove("hidden");
+
+        setTimeout(function() {
+            suscripcionCompletadaOverlay.classList.add("hidden");
+        }, 2000);
+        return;
+    }
+
+    
+    if (vipActivo) {
+        const suscripcionActivaOverlay = document.getElementById("suscripcionActivaOverlay");
+        suscripcionActivaOverlay.classList.remove("hidden");
+
+        setTimeout(function() {
+            suscripcionActivaOverlay.classList.add("hidden");
+        }, 2000);
+        return;
+    }
+
+  
+    if (saldo < saldoRequerido) {
+        const saldoInsuficienteOverlay = document.getElementById("saldoInsuficienteOverlay");
+        saldoInsuficienteOverlay.classList.remove("hidden");
+
+        setTimeout(function() {
+            saldoInsuficienteOverlay.classList.add("hidden");
+        }, 1000);
+        return;
+    }
+
+    
+    const overlay = document.getElementById("confirmacionOverlay");
+    overlay.classList.remove("hidden");
+
+    const aceptarBtn = document.getElementById("aceptarBtn");
+    aceptarBtn.onclick = function() {
+        if (saldo >= saldoRequerido) {
+            let nuevoContadorTareas = contadorTareas + tareasAgregadas; 
+            localStorage.setItem("contadorTareas_" + telefono, nuevoContadorTareas);
+            localStorage.setItem("vipActivo_" + telefono, "VIP " + vipNumber);
+
+           
+            localStorage.setItem("vipCompletado_" + telefono + "_" + vipNumber, true);
+
+            
+            const ordenesOverlay = document.getElementById("ordenesEncontradasOverlay");
+            ordenesOverlay.classList.remove("hidden");
+
+            setTimeout(function() {
+                ordenesOverlay.classList.add("hidden");
+            }, 2000);
+        }
+
+        cerrarConfirmacion();
+    };
+}
+
+function cerrarConfirmacion() {
+    const overlay = document.getElementById("confirmacionOverlay");
+    overlay.classList.add("hidden");
+}
+    
+    
+        document.addEventListener("DOMContentLoaded", function() {
+    const telefono = localStorage.getItem("telefono");
+    const saldo = parseFloat(localStorage.getItem("saldo_" + telefono) || 0);
+
+    const saldoDisponibleElement = document.getElementById('saldoDisponible');
+    saldoDisponibleElement.textContent = `Mex$${saldo.toFixed(2)}`;
+
+
+    let gananciasHoy = parseFloat(localStorage.getItem("gananciasHoy_" + telefono) || 0);
+    
+
+    document.getElementById("gananciasHoy").innerText = `Mex$${gananciasHoy.toFixed(2)}`;
+
+    const contadorTareas = parseInt(localStorage.getItem("contadorTareas_" + telefono) || "0");
+    const vipActivo = localStorage.getItem("vipActivo_" + telefono);
+    
+
+    
+    if (contadorTareas === 0 && vipActivo) {
+        localStorage.removeItem("vipActivo_" + telefono);
+    }
+
+
+            if (contadorTareas === 0 && !vipActivo) {
+                const suscripciones = [
+                    { vip: 1, saldoRequerido: 380, tareasAgregadas: 18 },
+                    { vip: 2, saldoRequerido: 250, tareasAgregadas: 10 },
+                    { vip: 3, saldoRequerido: 450, tareasAgregadas: 12 },
+                    { vip: 4, saldoRequerido: 700, tareasAgregadas: 14 },
+                    { vip: 5, saldoRequerido: 1000, tareasAgregadas: 16 },
+                    { vip: 6, saldoRequerido: 1300, tareasAgregadas: 18 }
+                ];
+    
+            }
+        });
+ 
+    </script>
+    
+    
+</body>
+</html>
